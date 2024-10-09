@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const SignupForm = (props) => {
   const navigate = useNavigate();
   const [message, setMessage] = useState(['']);
+  const [role, setRole] = useState('parent');
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -32,10 +33,10 @@ const SignupForm = (props) => {
       }
     }
 
-  const { username, password, passwordConf } = formData;
+  const { username, password, passwordConf, email } = formData;
 
   const isFormInvalid = () => {
-    return !(username && password && password === passwordConf);
+    return !(username && email && password && password === passwordConf);
   };
 
   return (
@@ -85,13 +86,14 @@ const SignupForm = (props) => {
         </div>
         <div>
           <label htmlFor="role">Role:</label>
-          <input
-            type="text"
+          <select
             id="role"
             value={role}
             name="role"
-            onChange={handleChange}
-          />
+            onChange={(handleChange)}>
+                <option value='Parent'>Parent</option>
+                <option value='Caregiver'>Caregiver</option>
+            </select>
         </div>
         <div>
           <button disabled={isFormInvalid()}>Sign Up</button>
