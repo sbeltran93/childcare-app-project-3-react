@@ -11,7 +11,7 @@ const SignupForm = (props) => {
     password: '',
     passwordConf: '',
     email: '',
-    role: '',
+    role: '', 
   });
 
   const updateMessage = (msg) => {
@@ -48,7 +48,7 @@ const SignupForm = (props) => {
           <label htmlFor="username">Username:</label>
           <input
             type="text"
-            id="name"
+            id="username"
             value={username}
             name="username"
             onChange={handleChange}
@@ -96,7 +96,7 @@ const SignupForm = (props) => {
             </select>
         </div>
         <div>
-          <button disabled={isFormInvalid()}>Sign Up</button>
+          <button>Sign Up</button>
           <Link to="/">
             <button>Cancel</button>
           </Link>
