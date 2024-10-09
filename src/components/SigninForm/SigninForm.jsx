@@ -15,7 +15,8 @@ const updateMessage = (msg) => {
 };
 
 const handleChange = (e) => {
-    updateMessage(msg);
+    // updateMessage(msg);
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 }
 
 const handleSubmit = async (e) => {
@@ -34,7 +35,7 @@ return (
     <main>
         <h1>Log In</h1>
         <p>{message}</p>
-        <form autoComplete="off" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="username">Username:</label>
                 <input
@@ -49,7 +50,7 @@ return (
             <div>
                 <label htmlFor="password">Password:</label>
                 <input
-                    type="text"
+                    type="password"
                     autoComplete="off"
                     id="password"
                     value={formData.password}

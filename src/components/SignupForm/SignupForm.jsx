@@ -5,13 +5,13 @@ import * as authService from '../../services/authService';
 const SignupForm = (props) => {
   const navigate = useNavigate();
   const [message, setMessage] = useState(['']);
-  const [role, setRole] = useState('parent');
+  const [role, setRole] = useState('');
   const [formData, setFormData] = useState({
     username: '',
     password: '',
     passwordConf: '',
     email: '',
-    role: '', 
+    role: 'parent', 
   });
 
   const updateMessage = (msg) => {
@@ -20,6 +20,7 @@ const SignupForm = (props) => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setRole(e.target.value)
   };
 
   const handleSubmit = async (e) => {
@@ -51,7 +52,7 @@ const SignupForm = (props) => {
             id="username"
             value={username}
             name="username"
-            onChange={handleChange}
+            onChange={(e) => handleChange(e)}
           />
         </div>
         <div>
@@ -61,7 +62,7 @@ const SignupForm = (props) => {
             id="email"
             value={email}
             name="email"
-            onChange={handleChange}
+            onChange={(e) => handleChange(e)}
           />
         </div>
         <div>
@@ -71,7 +72,7 @@ const SignupForm = (props) => {
             id="password"
             value={password}
             name="password"
-            onChange={handleChange}
+            onChange={(e) => handleChange(e)}
           />
         </div>
         <div>
@@ -81,7 +82,7 @@ const SignupForm = (props) => {
             id="confirm"
             value={passwordConf}
             name="passwordConf"
-            onChange={handleChange}
+            onChange={(e) => handleChange(e)}
           />
         </div>
         <div>
@@ -90,9 +91,10 @@ const SignupForm = (props) => {
             id="role"
             value={role}
             name="role"
-            onChange={(handleChange)}>
-                <option value='Parent'>Parent</option>
-                <option value='Caregiver'>Caregiver</option>
+            onChange={(e) => handleChange(e)}>
+                <option value=''>Select Role</option>
+                <option value='parent'>Parent</option>
+                <option value='caregiver'>Caregiver</option>
             </select>
         </div>
         <div>
