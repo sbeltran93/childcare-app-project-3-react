@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 
-const ChildForm = ({user}) => {
-    const [child, setChild] = useState({ name: '', age: '', notes: ''  });
+const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
+
+const ChildForm = ({user, setChild, handleChildAdded }) => {
+    const [child, setChildState] = useState({ name: '', age: '', notes: ''  });
     const [message, setMessage] = useState('');
 
 
@@ -30,6 +32,7 @@ try {
     const addedChild = await res.json();
     setMessage(`Child added: ${addedChild.name}`);
     setChild({ name: '', age: '', notes:'' });
+    handleChildAdded(addedChild);
 } catch (error) {
     setMessage(error.message)
 }
@@ -60,6 +63,7 @@ return (
           </label>
           <button type='submit'>Add Child</button>
           </form>
+          {messgae && <p>{message}</p>}
         </div>   
     )
 };

@@ -23,13 +23,13 @@ const handleSignout = () => {
       <NavBar user={user} handleSignout={handleSignout} />
       <Routes>
         { user ? (
-        <Route path='/' element={<Dashboard user={user} />} />
+        <Route path='/' element={<Dashboard user={user} setUser={setUser} child={child} setChild={setChild} />} />
       ) : (
         <Route path='/' element={<Landing />} />
       )}
         <Route path='/signup' element={<SignupForm  setUser={setUser} />} />
         <Route path='/signin' element={<SigninForm  setUser={setUser} />} />
-        <Route path='/child' element={<ChildForm setChild={setChild} />} />
+        <Route path='/childs' element={<ChildForm user={user} child={child} setChild={setChild}  />} />
     </Routes>
   </>
   )
