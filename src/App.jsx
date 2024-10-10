@@ -7,11 +7,12 @@ import SignupForm from './components/SignupForm/SignupForm';
 import SigninForm from './components/SigninForm/SigninForm';
 import * as authService from './services/authService'
 import ChildForm from './components/ChildForm/ChildForm';
+import Newsfeed from './components/NewsFeed/Newsfeed';
 
 const App = () => {
-  const [child, setChild] = useState('')
-  const [user, setUser] = useState
-  (authService.getUser());
+  const [child, setChild] = useState([]);
+  // const childId = `${childId}`;
+  const [user, setUser] = useState (authService.getUser());
 
 const handleSignout = () => {
   authService.signout()
@@ -30,6 +31,7 @@ const handleSignout = () => {
         <Route path='/signup' element={<SignupForm  setUser={setUser} />} />
         <Route path='/signin' element={<SigninForm  setUser={setUser} />} />
         <Route path='/childs' element={<ChildForm user={user} child={child} setChild={setChild}  />} />
+        <Route path='/newsfeeds' element={<Newsfeed childId={child._id} />} />
     </Routes>
   </>
   )
