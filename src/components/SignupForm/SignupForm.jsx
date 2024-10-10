@@ -46,7 +46,7 @@ const SignupForm = (props) => {
       <p>{message}</p>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username">Name:</label>
           <input
             type="text"
             id="username"
@@ -93,8 +93,8 @@ const SignupForm = (props) => {
             name="role"
             onChange={(e) => handleChange(e)}>
                 <option value=''>Select Role</option>
-                <option value='parent'>Parent</option>
-                <option value='caregiver'>Caregiver</option>
+                <option value='Parent'>Parent</option>
+                <option value='Caregiver'>Caregiver</option>
             </select>
         </div>
         <div>
