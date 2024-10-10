@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as authService from '../../services/authService';
-// import ChildForm from "../ChildForm/ChildForm";
+import ChildForm from "../ChildForm/ChildForm";
 
 const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
 
@@ -9,7 +9,6 @@ const Dashboard = ({ user, setUser, child, setChild }) => {
     const [editing, setEditing] = useState(false);
     const [editedUser, setEditedUser] = useState(user);
     // const [child, setChild] = useState('');
-
 
 
     const handleChange = (e) => {
@@ -70,7 +69,8 @@ const Dashboard = ({ user, setUser, child, setChild }) => {
             <h1>Welcome, {user.username}</h1>
             <p>
                 This is the dashboard for all your personal account information.</p>
-            
+                <h2>Add your child</h2>
+            <ChildForm user={user} setChild={setChild} />
             <h2>Account Details</h2>
 
             {editing ? (
@@ -112,6 +112,9 @@ const Dashboard = ({ user, setUser, child, setChild }) => {
                     <h2>Role: {user.role}</h2>
                     <h2>Email: {user.email}</h2>
                     <h2>User Id: {user._id}</h2>
+                    {/* {childs.map((child, index) => (
+                        <h2 key={index}>Child: {child.name}</h2> */}
+                    {/* ))} */}
                     <button onClick={() => { setEditedUser(user); setEditing(true); }}>Edit</button>
                     <button onClick={handleDelete}>Delete Account</button>
                 </div>    
