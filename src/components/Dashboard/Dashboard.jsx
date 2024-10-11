@@ -58,7 +58,7 @@ const Dashboard = ({ user, setUser, child, setChild }) => {
             }
             authService.signout();
             setUser(null);
-            res.redirected('/');
+            // res.redirected('/');
         } catch (error) {
             console.error('Error deleting user', error.message)
         }
@@ -112,9 +112,8 @@ const Dashboard = ({ user, setUser, child, setChild }) => {
                     <h2>Role: {user.role}</h2>
                     <h2>Email: {user.email}</h2>
                     <h2>User Id: {user._id}</h2>
-                    {/* {childs.map((child, index) => (
-                        <h2 key={index}>Child: {child.name}</h2> */}
-                    {/* ))} */}
+                    <h2>Child: {child.name}</h2>
+
                     <button onClick={() => { setEditedUser(user); setEditing(true); }}>Edit</button>
                     <button onClick={handleDelete}>Delete Account</button>
                 </div>    

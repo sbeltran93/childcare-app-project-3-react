@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-
-
 const ChildForm = ({user}) => {
     const [child, setChild] = useState({ name: '', age: '', notes: ''  });
     const [message, setMessage] = useState('');
