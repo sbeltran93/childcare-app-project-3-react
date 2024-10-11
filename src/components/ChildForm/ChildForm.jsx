@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import * as authService from "../../services/authService";
+
+// const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
+const BACKEND_URL = 'http://localhost:3000';
 
 const ChildForm = ({user, onChildAdded}) => {
     const [child, setChild] = useState({ name: '', age: '', notes: ''  });

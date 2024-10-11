@@ -20,6 +20,11 @@ const handleSignout = () => {
   setUser(null);
 }  
 
+const handleChildAdded = (addedChild) => {
+  setChild([...child, addedChild]);
+  const token = localStorage.getItem ('token');
+};
+
   return (
     <>
       <NavBar user={user} handleSignout={handleSignout} />
@@ -31,7 +36,7 @@ const handleSignout = () => {
       )}
         <Route path='/signup' element={<SignupForm  setUser={setUser} />} />
         <Route path='/signin' element={<SigninForm  setUser={setUser} />} />
-        <Route path='/childs' element={<ChildForm user={user} child={child} setChild={setChild}  />} />
+        <Route path='/childs' element={<ChildForm user={user} child={child} setChild={setChild} onChildAdded={handleChildAdded}  />} />
         <Route path='/newsfeeds' element={<Newsfeed childId={child._id} />} />
     </Routes>
   </>

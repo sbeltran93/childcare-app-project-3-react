@@ -1,15 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as authService from '../../services/authService';
 import ChildForm from "../ChildForm/ChildForm";
 
-const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
+// const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
+const BACKEND_URL = 'http://localhost:3000';
 
 const Dashboard = ({ user, setUser }) => {
     
     const [editing, setEditing] = useState(false);
     const [editedUser, setEditedUser] = useState(user);
     const [children, setChildren] = useState([]);
+    const [loading, setLoading] = useState(false);
     // const [child, setChild] = useState('');
+
+    useEffect(() => {
+        const fetchChildren = async () => {
+          const token = localStorage.getItem('token');
+          const response = await fetch(`${BACKEND_URL}/childs`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          const data = await response.json();
+          setChildren(data);
+          setLoading(false);
+        };
+        fetchChildren();
+      }, []);
+
 
 
     const handleChange = (e) => {
@@ -64,10 +84,11 @@ const Dashboard = ({ user, setUser }) => {
     };
 
     const handleChildAdded = (addedChild) => {
-        setChildren([...children, addedChild])
+        setChildren([...children, addedChild]);
+        const token = localStorage.getItem ('token');
     };
 
-    return (
+    return(
         <main>
             <h1>Welcome, {user.username}</h1>
             <p>
@@ -117,8 +138,8 @@ const Dashboard = ({ user, setUser }) => {
                     <h2>User Id: {user._id}</h2>
                     <h2>Children:</h2>
                     <ul>
-                        {children.map=((child) => (
-                            <li key={child._id}>{child.name}</li>
+                        {children.map((child, index) => (
+                            <div key={child._id}>{child.name}</div>
                         ))}
                     </ul>
 

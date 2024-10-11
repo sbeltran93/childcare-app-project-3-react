@@ -1,4 +1,5 @@
-const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
+// const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
+const BACKEND_URL = 'http://localhost:3000';
 
 const signup = async (FormData) => {
     try {
