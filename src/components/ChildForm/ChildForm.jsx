@@ -4,22 +4,24 @@ import * as authService from "../../services/authService";
 // const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
 const BACKEND_URL = 'http://localhost:3000';
 
-const ChildForm = ({user, onChildAdded}) => {
-    const [child, setChild] = useState({ name: '', age: '', notes: ''  });
+const ChildForm = ({user, onChildAdded, childToEdit, onChildEdited }) => {
+    const [child, setChild] = useState(childToEdit ? childToEdit : { name: '', age: '', notes: ''  });
     const [message, setMessage] = useState('');
-    const [editing, setEditing] = useState(false);
-    const [editedChild, setEditedChild] = useState(child);
+    const [editing, setEditing] = useState(!!childToEdit);
+    // const [editedChild, setEditedChild] = useState(child);
 
 
 const handleChange = (e) => {
     const { name, value } = e.target;
     setChild({ ...child, [name]: value });
-    setEditedChild({ ...editedChild, [name]: value });
+    // setEditedChild({ ...editedChild, [name]: value });
 };
 
 const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem ('token');
+ 
+    
 
 try {
     const res = await fetch(`${BACKEND_URL}/childs`, {
@@ -35,24 +37,18 @@ try {
         throw new Error(`Error adding child: ${errorText}`);
     }
 
-    // const updatedChild = await res.json();
-    //     setEditedChild(updatedChild);
-    //     setChild(updatedChild);
-    //     setEditing(false);
-    //     } catch (error) {
-    //         console.error('Error updating child', error.message);
-
     const addedChild = await res.json();
     setMessage(`Child added: ${addedChild.name}`);
     setChild({ name: '', age: '', notes:'' });
     onChildAdded(addedChild);
 } catch (error) {
     setMessage(error.message)
-}
+};
+
 };
 return (
     <div>
-      <h1>Add your Child</h1>
+      <h1>{editing ? 'Edit Your Child' : 'Add your Child'}</h1>
       <form onSubmit={handleSubmit}>
           <label>Name:
           <input
@@ -74,10 +70,11 @@ return (
             value={child.notes}
             onChange={handleChange} required />
           </label>
-          <button type='submit'>Add Child</button>
+          <button type='submit'>{editing ? 'Update Child' : 'Add Child'}</button>
           </form>
           {message && <p>{message}</p>}
-        </div>   
-    )
-};
+        </div>     
+    ) 
+    
+}
     export default ChildForm;
