@@ -4,10 +4,11 @@ import ChildForm from "../ChildForm/ChildForm";
 
 const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
 
-const Dashboard = ({ user, setUser, child, setChild }) => {
+const Dashboard = ({ user, setUser }) => {
     
     const [editing, setEditing] = useState(false);
     const [editedUser, setEditedUser] = useState(user);
+    const [children, setChildren] = useState([]);
     // const [child, setChild] = useState('');
 
 
@@ -38,10 +39,8 @@ const Dashboard = ({ user, setUser, child, setChild }) => {
         setEditing(false);
         } catch (error) {
             console.error('Error updating user', error.message);
-        }
-        
+        }  
     }
-    
     const handleDelete = async () => {
         const token = localStorage.getItem ('token');
         try {
@@ -64,13 +63,17 @@ const Dashboard = ({ user, setUser, child, setChild }) => {
         }
     };
 
+    const handleChildAdded = (addedChild) => {
+        setChildren([...children, addedChild])
+    };
+
     return (
         <main>
             <h1>Welcome, {user.username}</h1>
             <p>
                 This is the dashboard for all your personal account information.</p>
                 <h2>Add your child</h2>
-            <ChildForm user={user} setChild={setChild} />
+            <ChildForm user={user} onChildAdded={handleChildAdded} />
             <h2>Account Details</h2>
 
             {editing ? (
@@ -112,7 +115,12 @@ const Dashboard = ({ user, setUser, child, setChild }) => {
                     <h2>Role: {user.role}</h2>
                     <h2>Email: {user.email}</h2>
                     <h2>User Id: {user._id}</h2>
-                    <h2>Child: {child.name}</h2>
+                    <h2>Children:</h2>
+                    <ul>
+                        {children.map=((child) => (
+                            <li key={child._id}>{child.name}</li>
+                        ))}
+                    </ul>
 
                     <button onClick={() => { setEditedUser(user); setEditing(true); }}>Edit</button>
                     <button onClick={handleDelete}>Delete Account</button>

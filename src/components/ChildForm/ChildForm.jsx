@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ChildForm = ({user}) => {
+const ChildForm = ({user, onChildAdded}) => {
     const [child, setChild] = useState({ name: '', age: '', notes: ''  });
     const [message, setMessage] = useState('');
 
@@ -11,7 +11,7 @@ const handleChange = (e) => {
 };
 
 const handleSubmit = async (e) => {
-    e.prevenDefault();
+    e.preventDefault();
     const token = localStorage.getItem ('token');
 
 try {
