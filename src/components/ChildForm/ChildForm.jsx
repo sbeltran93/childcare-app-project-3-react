@@ -7,11 +7,14 @@ const BACKEND_URL = 'http://localhost:3000';
 const ChildForm = ({user, onChildAdded}) => {
     const [child, setChild] = useState({ name: '', age: '', notes: ''  });
     const [message, setMessage] = useState('');
+    const [editing, setEditing] = useState(false);
+    const [editedChild, setEditedChild] = useState(child);
 
 
 const handleChange = (e) => {
     const { name, value } = e.target;
     setChild({ ...child, [name]: value });
+    setEditedChild({ ...editedChild, [name]: value });
 };
 
 const handleSubmit = async (e) => {
@@ -31,6 +34,14 @@ try {
         const errorText = await res.text();
         throw new Error(`Error adding child: ${errorText}`);
     }
+
+    // const updatedChild = await res.json();
+    //     setEditedChild(updatedChild);
+    //     setChild(updatedChild);
+    //     setEditing(false);
+    //     } catch (error) {
+    //         console.error('Error updating child', error.message);
+
     const addedChild = await res.json();
     setMessage(`Child added: ${addedChild.name}`);
     setChild({ name: '', age: '', notes:'' });
