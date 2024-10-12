@@ -5,10 +5,11 @@ const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
 
 const ChildEditForm = ({ child, onChildEdited, onCancel }) => {
   const [editedChild, setEditedChild] = useState(child);
+  const [editing, setEditing] = useState(true);
   
   useEffect(() => {
     setEditedChild(child);
-  }, [child, editedChild]);
+  }, [child]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,6 +47,8 @@ const ChildEditForm = ({ child, onChildEdited, onCancel }) => {
   };
 
   return (
+    <>
+  {editing ? (
     <form onSubmit={handleSubmit}>
       <label htmlFor="name">
         Name:
@@ -78,8 +81,12 @@ const ChildEditForm = ({ child, onChildEdited, onCancel }) => {
       </label>
       <button type="submit">Save Changes</button>
       <button type="button" onClick={onCancel}>Cancel</button>
-    </form>
-  );
+    </form> 
+  ) : (
+    <p>Edit is not enabled</p>
+  )}
+  </>
+);
 };
 
 export default ChildEditForm;
