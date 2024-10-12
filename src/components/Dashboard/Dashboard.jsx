@@ -11,6 +11,7 @@ const Dashboard = ({ user, setUser }) => {
     const [editedUser, setEditedUser] = useState(user);
     const [children, setChildren] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [childToEdit, setChildToEdit] = useState({name: '', age: '', notes: ''});
     // const [child, setChild] = useState('');
 
     useEffect(() => {
@@ -88,13 +89,23 @@ const Dashboard = ({ user, setUser }) => {
         const token = localStorage.getItem ('token');
     };
 
+    const onChildEdited = (editedChild) => {
+      // Update the child data in the state
+      setChildren(children.map((child) => (child.id === editedChild.id ? editedChild : child)));
+    };
+
     return(
         <main>
             <h1>Welcome, {user.username}</h1>
             <p>
                 This is the dashboard for all your personal account information.</p>
                 <h2>Add your child</h2>
-            <ChildForm user={user} onChildAdded={handleChildAdded} />
+            <ChildForm 
+            user={user} 
+            onChildAdded={handleChildAdded} 
+            childToEdit={childToEdit} 
+            onChildEdited={onChildEdited} 
+            />
             <h2>Account Details</h2>
 
             {editing ? (

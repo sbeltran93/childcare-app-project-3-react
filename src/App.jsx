@@ -36,7 +36,7 @@ const handleChildAdded = (addedChild) => {
       )}
         <Route path='/signup' element={<SignupForm  setUser={setUser} />} />
         <Route path='/signin' element={<SigninForm  setUser={setUser} />} />
-        <Route path='/childs' element={<ChildForm user={user} child={child} setChild={setChild} onChildAdded={handleChildAdded}  />} />
+        <Route path='/childs' element={<ChildForm user={user} child={child} setChild={setChild} onChildAdded={handleChildAdded} />} />
         <Route path='/newsfeeds' element={<Newsfeed childId={child._id} />} />
     </Routes>
   </>
