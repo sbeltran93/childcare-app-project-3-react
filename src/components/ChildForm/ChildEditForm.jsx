@@ -46,6 +46,28 @@ const ChildEditForm = ({ child, onChildEdited, onCancel }) => {
     }
   };
 
+  const handleDelete = async () => {
+    console.log("child object",child)
+    const token = localStorage.getItem ('token');
+    try {
+        const res = await fetch(`${BACKEND_URL}/childs/${child._id}`, {
+            method: 'DELETE',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }, 
+        });       
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`Delete child failed: ${errorText}`);
+        }
+        // window.location.reload();
+        // onChildEdited(null);
+    } catch (error) {
+        console.error('Error deleting child', error.message)
+    }
+};
+
   return (
     <>
   {editing ? (
@@ -81,10 +103,15 @@ const ChildEditForm = ({ child, onChildEdited, onCancel }) => {
       </label>
       <button type="submit">Save Changes</button>
       <button type="button" onClick={onCancel}>Cancel</button>
+      
     </form> 
+    
+    
+    
   ) : (
     <p>Edit is not enabled</p>
   )}
+  <button onClick={handleDelete} >Delete Child</button>
   </>
 );
 };

@@ -104,13 +104,13 @@ const Dashboard = ({ user, setUser }) => {
             <h1>Welcome, {user.username}</h1>
             <p>
                 This is the dashboard for all your personal account information.</p>
-                <h2>Add your child</h2>
     
                 {editingChild ? (
     <ChildEditForm
         child={editingChild}
         onChildEdited={onChildEdited}
         onCancel={handleCancelEdit}
+        // onChildDelete={handleChildDelete}
     />
 ) : (
     <ChildForm
@@ -125,12 +125,15 @@ const Dashboard = ({ user, setUser }) => {
     {children.map((child) => (
         <div key={child._id}>
             <span>{child.name}</span>
-            <button onClick={() => handleEditChild(child)}>Edit</button>
+            <button onClick={() => handleEditChild(child)}>Edit Child</button>
         </div>
     ))}
 </ul>
             
             <h2>Account Details</h2>
+
+            <button onClick={() => { setEditedUser(user); setEditing(true); }}>Edit User</button>
+            <button onClick={handleDelete}>Delete Account</button>
 
             {editing ? (
                 <form onSubmit={handleSubmit}>
@@ -168,18 +171,15 @@ const Dashboard = ({ user, setUser }) => {
             
                 <div>
                     <h2>Parent name: {user.username}</h2>
-                    <h2>Role: {user.role}</h2>
-                    <h2>Email: {user.email}</h2>
-                    <h2>User Id: {user._id}</h2>
+                    <h3>Role: {user.role}</h3>
+                    <h3>Email: {user.email}</h3>
+                    <h3>User Id: {user._id}</h3>
                     <h2>Children:</h2>
                     <ul>
                         {children.map((child, index) => (
-                            <div key={child._id}>{child.name}</div>
+                           <div key={child._id}>Name: {child.name}, Age:{child.age}, Special Notes: {child.notes}, Child Id: {child._id}</div> 
                         ))}
                     </ul>
-
-                    <button onClick={() => { setEditedUser(user); setEditing(true); }}>Edit</button>
-                    <button onClick={handleDelete}>Delete Account</button>
                 </div>    
         )}
         </main>

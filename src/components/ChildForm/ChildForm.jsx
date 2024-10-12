@@ -40,7 +40,7 @@ const ChildForm = ({ user, onChildAdded }) => {
     };
     return (
       <div>
-        <h1>Add Child</h1>
+        <h2>Add Child</h2>
         <form onSubmit={handleSubmit}>
           <label>
             Name:
