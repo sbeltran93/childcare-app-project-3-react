@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import * as authService from '../../services/authService';
 import ChildForm from "../ChildForm/ChildForm";
+import ChildEditForm from "../ChildForm/ChildEditForm";
 
-// const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
-const BACKEND_URL = 'http://localhost:3000';
+const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
+// const BACKEND_URL = 'http://localhost:3000';
 
 const Dashboard = ({ user, setUser }) => {
     
@@ -11,13 +12,21 @@ const Dashboard = ({ user, setUser }) => {
     const [editedUser, setEditedUser] = useState(user);
     const [children, setChildren] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [childToEdit, setChildToEdit] = useState({name: '', age: '', notes: ''});
+    const [editingChild, setEditingChild] = useState(null);
     // const [child, setChild] = useState('');
+
+
+    const handleEditChild = (child) => {
+        setEditingChild(child);
+    };
+    const handleCancelEdit = () => {
+        setEditingChild(null);
+    };
 
     useEffect(() => {
         const fetchChildren = async () => {
           const token = localStorage.getItem('token');
-          const response = await fetch(`${BACKEND_URL}/childs`, {
+          const response = await fetch(`${BACKEND_URL}/childs/`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -30,8 +39,6 @@ const Dashboard = ({ user, setUser }) => {
         };
         fetchChildren();
       }, []);
-
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -78,21 +85,19 @@ const Dashboard = ({ user, setUser }) => {
             }
             authService.signout();
             setUser(null);
-            // res.redirected('/');
         } catch (error) {
             console.error('Error deleting user', error.message)
         }
     };
-
     const handleChildAdded = (addedChild) => {
         setChildren([...children, addedChild]);
         const token = localStorage.getItem ('token');
     };
 
     const onChildEdited = (editedChild) => {
-      // Update the child data in the state
-      setChildren(children.map((child) => (child.id === editedChild.id ? editedChild : child)));
+        setChildren(children.map((child) => (child._id === editedChild._id ? editedChild : child)));
     };
+
 
     return(
         <main>
@@ -100,12 +105,31 @@ const Dashboard = ({ user, setUser }) => {
             <p>
                 This is the dashboard for all your personal account information.</p>
                 <h2>Add your child</h2>
-            <ChildForm 
-            user={user} 
-            onChildAdded={handleChildAdded} 
-            childToEdit={childToEdit} 
-            onChildEdited={onChildEdited} 
-            />
+    
+                {editingChild ? (
+    <ChildEditForm
+        child={editingChild}
+        onChildEdited={onChildEdited}
+        onCancel={handleCancelEdit}
+    />
+) : (
+    <ChildForm
+        user={user}
+        onChildAdded={handleChildAdded}
+        // childToEdit={childToEdit}
+        onChildEdited={onChildEdited}
+    />
+)}
+
+<ul>
+    {children.map((child) => (
+        <div key={child._id}>
+            <span>{child.name}</span>
+            <button onClick={() => handleEditChild(child)}>Edit</button>
+        </div>
+    ))}
+</ul>
+            
             <h2>Account Details</h2>
 
             {editing ? (

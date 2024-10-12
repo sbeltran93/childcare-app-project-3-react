@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import * as authService from "../../services/authService";
 
-// const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
-const BACKEND_URL = 'http://localhost:3000';
+const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
+// const BACKEND_URL = 'http://localhost:3000';
 
-const ChildForm = ({ user, onChildAdded, childToEdit, onChildEdited }) => {
-    const [child, setChild] = useState(childToEdit ? childToEdit : { name: '', age: '', notes: '' });
+const ChildForm = ({ user, onChildAdded }) => {
+    const [child, setChild] = useState({ name: '', age: '', notes: '' });
     const [message, setMessage] = useState('');
-    const [editing, setEditing] = useState(!!childToEdit);
   
     const handleChange = (e) => {
       const { name, value } = e.target;
@@ -18,23 +17,7 @@ const ChildForm = ({ user, onChildAdded, childToEdit, onChildEdited }) => {
       e.preventDefault();
       const token = localStorage.getItem('token');
   
-      try {
-        if (editing) {
-          const res = await fetch(`${BACKEND_URL}/childs/${child.id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            body: JSON.stringify(child),
-          });
-  
-          if (!res.ok) {
-            const errorText = await res.text();
-            throw new Error(`Error editing child: ${errorText}`);
-          }
-  
-          const editedChild = await res.json();
-          setMessage(`Child edited: ${editedChild.name}`);
-          onChildEdited(editedChild);
-        } else {
+       try {
           const res = await fetch(`${BACKEND_URL}/childs`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -50,15 +33,14 @@ const ChildForm = ({ user, onChildAdded, childToEdit, onChildEdited }) => {
           setMessage(`Child added: ${addedChild.name}`);
           setChild({ name: '', age: '', notes: '' });
           onChildAdded(addedChild);
-        }
-      } catch (error) {
-        setMessage(error.message);
+        
+          } catch (error) {
+            setMessage(error.message);
       }
     };
-  
     return (
       <div>
-        <h1>{editing ? 'Edit Child' : 'Add Child'}</h1>
+        <h1>Add Child</h1>
         <form onSubmit={handleSubmit}>
           <label>
             Name:
@@ -89,10 +71,7 @@ const ChildForm = ({ user, onChildAdded, childToEdit, onChildEdited }) => {
               required
             />
           </label>
-          <button type="submit">{editing ? 'Save Changes' : 'Add Child'}</button>
-          {childToEdit && (
-            <button onClick={() => handleEditChild(childToEdit)}>Edit</button>
-          )}
+          <button type="submit">Add Child</button>
         </form>
         {message && <p>{message}</p>}
       </div>
