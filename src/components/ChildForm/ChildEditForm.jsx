@@ -3,7 +3,7 @@ import ChildForm from './ChildForm';
 
 const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
 
-const ChildEditForm = ({ child, onChildEdited, onCancel }) => {
+const ChildEditForm = ({ child, onChildEdited, onCancel, onChildDelete }) => {
   const [editedChild, setEditedChild] = useState(child);
   const [editing, setEditing] = useState(true);
   
@@ -15,7 +15,7 @@ const ChildEditForm = ({ child, onChildEdited, onCancel }) => {
     const { name, value } = e.target;
     setEditedChild({ ...editedChild, [name]: value });
   };
-
+// submitting edit child
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
@@ -39,30 +39,35 @@ const ChildEditForm = ({ child, onChildEdited, onCancel }) => {
       }
       }
 
+      // updated child
       const updatedChild = await res.json();
       onChildEdited(updatedChild);
     } catch (error) {
       console.error('Error updating child', error);
     }
   };
-
+// delete child
   const handleDelete = async () => {
-    console.log("child object",child)
+    console.log("child object", child)
     const token = localStorage.getItem ('token');
     try {
+      console.log(child._id)
         const res = await fetch(`${BACKEND_URL}/childs/${child._id}`, {
             method: 'DELETE',
             headers: { 
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             }, 
+            
         });       
         if (!res.ok) {
             const errorText = await res.text();
             throw new Error(`Delete child failed: ${errorText}`);
         }
+        onChildDelete([child._id]);
+        // setChildren([...addedChild, handleDelete])
         // window.location.reload();
-        // onChildEdited(null);
+        
     } catch (error) {
         console.error('Error deleting child', error.message)
     }

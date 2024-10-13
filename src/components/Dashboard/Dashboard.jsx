@@ -98,6 +98,10 @@ const Dashboard = ({ user, setUser }) => {
         setChildren(children.map((child) => (child._id === editedChild._id ? editedChild : child)));
     };
 
+    const handleChildDelete = (childId) => {
+        console.log(childId)
+        setChildren(children.filter(child => child._id !== childId));
+    };
 
     return(
         <main>
@@ -110,7 +114,7 @@ const Dashboard = ({ user, setUser }) => {
         child={editingChild}
         onChildEdited={onChildEdited}
         onCancel={handleCancelEdit}
-        // onChildDelete={handleChildDelete}
+        onChildDelete={handleChildDelete}
     />
 ) : (
     <ChildForm

@@ -12,7 +12,7 @@ const ChildForm = ({ user, onChildAdded }) => {
       const { name, value } = e.target;
       setChild({ ...child, [name]: value });
     };
-  
+  // submitting child
     const handleSubmit = async (e) => {
       e.preventDefault();
       const token = localStorage.getItem('token');
@@ -28,7 +28,7 @@ const ChildForm = ({ user, onChildAdded }) => {
             const errorText = await res.text();
             throw new Error(`Error adding child: ${errorText}`);
           }
-  
+          // adding a child
           const addedChild = await res.json();
           setMessage(`Child added: ${addedChild.name}`);
           setChild({ name: '', age: '', notes: '' });
