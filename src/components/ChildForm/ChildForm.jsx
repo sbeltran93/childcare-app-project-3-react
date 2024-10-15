@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as authService from "../../services/authService";
 
 const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
-// const BACKEND_URL = 'http://localhost:3000';
+
 
 const ChildForm = ({ user, onChildAdded }) => {
     const [child, setChild] = useState({ name: '', age: '', notes: '' });
@@ -13,7 +13,6 @@ const ChildForm = ({ user, onChildAdded }) => {
       const { name, value } = e.target;
       setChild({ ...child, [name]: value });
     };
-  // submitting child
     const handleSubmit = async (e) => {
       e.preventDefault();
       const token = localStorage.getItem('token');
@@ -29,7 +28,7 @@ const ChildForm = ({ user, onChildAdded }) => {
             const errorText = await res.text();
             throw new Error(`Error adding child: ${errorText}`);
           }
-          // adding a child
+
           const addedChild = await res.json();
           setMessage(`Child added: ${addedChild.name}`);
           setChild({ name: '', age: '', notes: '' });

@@ -15,7 +15,6 @@ const updateMessage = (msg) => {
 };
 
 const handleChange = (e) => {
-    // updateMessage(msg);
     setFormData({ ...formData, [e.target.name]: e.target.value });
 }
 

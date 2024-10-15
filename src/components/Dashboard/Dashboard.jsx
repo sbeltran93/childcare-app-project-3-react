@@ -4,7 +4,6 @@ import ChildForm from "../ChildForm/ChildForm";
 import ChildEditForm from "../ChildForm/ChildEditForm";
 
 const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
-// const BACKEND_URL = 'http://localhost:3000';
 
 const Dashboard = ({ user, setUser }) => {
     
@@ -14,15 +13,9 @@ const Dashboard = ({ user, setUser }) => {
     const [loading, setLoading] = useState(false);
     const [editingChild, setEditingChild] = useState(null);
     
-    // const [child, setChild] = useState('');
-
-
-
-    //handle editing child,setsediting child to child
     const handleEditChild = (child) => {
         setEditingChild(child);
     };
-    //cancel edit, sets editing child to null
     const handleCancelEdit = () => {
         setEditingChild(null);
     };
@@ -103,7 +96,6 @@ const Dashboard = ({ user, setUser }) => {
     };
 
     const handleChildDelete = (childId) => {
-        console.log(childId)
         setChildren(children.filter(child => child._id !== childId));
     };
 
@@ -124,7 +116,6 @@ const Dashboard = ({ user, setUser }) => {
     <ChildForm
         user={user}
         onChildAdded={handleChildAdded}
-        // childToEdit={childToEdit}
         onChildEdited={onChildEdited}
     />
 )}

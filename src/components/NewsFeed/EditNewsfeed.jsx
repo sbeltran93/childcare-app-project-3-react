@@ -7,8 +7,6 @@ const EditNewsfeed = ({ post, onPostEdited, onCancel, onPostDelete }) => {
     const [editedPost, setEditedPost] = useState(post);
     const [editing, setEditing] = useState(true);
 
-
-    //useeffect to display
     useEffect(() => {
         setEditedPost(post);
     }, [post]);
@@ -17,13 +15,11 @@ const EditNewsfeed = ({ post, onPostEdited, onCancel, onPostDelete }) => {
       setEditing(true);
   };
 
-    //handle change
     const handleChange = async (e) => {
         const { name, value } = e.target;
         setEditedPost({ ...editedPost, [name]: value });
     };
 
-    //handlesubmit
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('token');
@@ -45,23 +41,15 @@ const EditNewsfeed = ({ post, onPostEdited, onCancel, onPostDelete }) => {
                 throw new Error(`Error updating Post: ${errorText}`);
             }
             }
-    
-          // updated post
           const updatedPost = await res.json();
           onPostEdited(updatedPost);
         } catch (error) {
           console.error('Error updating post', error);
         }
     }
-
-
-    //deletepost //onpostdelete
-
     const handleDelete = async () => {
-        console.log("post object", post)
         const token = localStorage.getItem ('token');
         try {
-          console.log(post._id)
             const res = await fetch(`${BACKEND_URL}/newsfeeds/${post._id}`, {
                 method: 'DELETE',
                 headers: { 
@@ -81,7 +69,6 @@ const EditNewsfeed = ({ post, onPostEdited, onCancel, onPostDelete }) => {
         }
     };
 
-    //edit form
     return (
         <>
       {editing ? (
