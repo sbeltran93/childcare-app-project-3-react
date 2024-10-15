@@ -67,7 +67,7 @@ const handleSubmit = async (e) => {
       throw new Error('Post to newsfeed failed');
     }
     const addedPost = await res.json();
-    setMessage(`Post added: ${addedPost.newsFeed.content}`);
+    setMessage(`Post added: ${addedPost.content}`);
     setNewsfeed({ content: '' });
     onPostAdded(addedPost);
     setPosts([...posts, addedPost])
