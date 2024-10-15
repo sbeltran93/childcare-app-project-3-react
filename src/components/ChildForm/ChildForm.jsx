@@ -7,6 +7,7 @@ const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
 const ChildForm = ({ user, onChildAdded }) => {
     const [child, setChild] = useState({ name: '', age: '', notes: '' });
     const [message, setMessage] = useState('');
+    
   
     const handleChange = (e) => {
       const { name, value } = e.target;

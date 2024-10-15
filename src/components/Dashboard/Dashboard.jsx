@@ -13,7 +13,9 @@ const Dashboard = ({ user, setUser }) => {
     const [children, setChildren] = useState([]);
     const [loading, setLoading] = useState(false);
     const [editingChild, setEditingChild] = useState(null);
+    
     // const [child, setChild] = useState('');
+
 
 
     //handle editing child,setsediting child to child

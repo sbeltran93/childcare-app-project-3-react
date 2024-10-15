@@ -16,7 +16,17 @@ const [ posts, setPosts ] = useState([]);
 const [ loading, setLoading ] = useState(true);
 const [ error, setError ] = useState(null);
 const [ message, setMessage ] = useState('');
+const [editingPost, setEditingPost] = useState(null);
+const [editedPost, setEditedPost] = useState(null);
 
+const handleEditPost = (post) => {
+  setEditingPost(post);
+};
+
+//handelCancelEdit to setEditingPost to null
+const handleCancelEdit = () => {
+  setEditingPost(null)
+};
 //display all posts
 
 useEffect(() => {
@@ -46,6 +56,12 @@ useEffect(() => {
   fetchPosts();
 }, []);
 
+//function to handle change
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setNewsfeed({ ...newsfeed, [name]: value });
+};
 
 
 // handleSubmit to post by userid
@@ -71,56 +87,76 @@ const handleSubmit = async (e) => {
     setNewsfeed({ content: '' });
     onPostAdded(addedPost);
     setPosts([...posts, addedPost])
-  } catch (error) {
+  } 
+  catch (error) {
     setMessage(error.message);
   }
 };
+// const handleEditSubmit = async (e) => {
+//   e.preventDefault();
+//   const token = localStorage.getItem ('token');
+//   const updatedPost = await res.json();
+//   setEditedPost(updatedPost);
+//   setPosts(updatedPost);
+//   setEditingPost(false);
+// }
 
-
-
-//function to handle change
-
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setNewsfeed({ ...newsfeed, [name]: value });
-};
 
 
 //( WORK ON THIS AFTER I GET NEWSFEED TO POST A POST!)/////
 //handle editing post feed id,setEditingPost to post
 
 
-//handelCancelEdit to setEditingPost to null
+
   
 
 //updated post handleChange
+const onPostEditing = (editingPost) => {
+  setPosts(posts.map((post) => (post._id === editingPost._id ? editingPost: post)));
+}
 
  
 // deleting post handleDelete
 //( WORK ON THIS AFTER I GET NEWSFEED TO POST A POST!)//////  
-   
+const handlePostDelete = (postId) => {
+  setPosts(posts.filter(post => post._id !== postId));
+};   
+
+
 //form to make a post
 return (
-  <div>
-    <h1>Newsfeed</h1>
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="content"
-        value={newsfeed.content}
-        onChange={handleChange}
-        required
+  <>
+    {editingPost ? (
+      <EditNewsfeed
+        post={editingPost}
+        onPostEdited={onPostEdited}
+        onCancel={handleCancelEdit}
+        onPostDelete={handlePostDelete}
       />
-      <button type="submit">Post</button>
-    </form>
-    {message && <p>{message}</p>}
-    <ul>
-      {posts.map((post) => (
-        <div key={post._id}>Post: {post.content}, Post By:{post.caregiver}</div> 
-      ))}
-    </ul>
-  </div>
-//form to edit post on new jsx page
-  )
+    ) : null}
+
+    <div>
+      <h1>Newsfeed</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="content"
+          value={newsfeed.content}
+          onChange={handleChange}
+          required
+        />
+        <button type="submit">Post</button>
+      </form>
+      {message && <p>{message}</p>}
+      <ul>
+        {posts.map((post) => (
+          <div key={post._id}>
+            Post: {post.content}, Post By: {post.caregiver}
+          </div>
+        ))}
+      </ul>
+    </div>
+  </>
+);
 }
 export default Newsfeed;

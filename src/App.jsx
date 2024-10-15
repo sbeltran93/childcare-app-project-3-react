@@ -8,6 +8,7 @@ import SigninForm from './components/SigninForm/SigninForm';
 import * as authService from './services/authService'
 import ChildForm from './components/ChildForm/ChildForm';
 import Newsfeed from './components/NewsFeed/Newsfeed';
+import EditNewsfeed from './components/NewsFeed/EditNewsfeed';
 
 const App = () => {
   const [child, setChild] = useState([]);
