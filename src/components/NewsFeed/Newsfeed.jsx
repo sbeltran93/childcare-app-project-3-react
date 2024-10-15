@@ -138,8 +138,7 @@ return (
     <div>
       <h1>Newsfeed</h1>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
+        <textarea
           name="content"
           value={newsfeed.content}
           onChange={handleChange}

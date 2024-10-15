@@ -4,7 +4,7 @@ import Newsfeed from "./Newsfeed";
 const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
 
 const EditNewsfeed = ({ post, onPostEdited, onCancel, onPostDelete }) => {
-    const [editedPost, setEditedPost] = useState(newsfeed);
+    const [editedPost, setEditedPost] = useState(post);
     const [editing, setEditing] = useState(true);
 
 
@@ -12,6 +12,10 @@ const EditNewsfeed = ({ post, onPostEdited, onCancel, onPostDelete }) => {
     useEffect(() => {
         setEditedPost(post);
     }, [post]);
+
+    const handleEdit = () => {
+      setEditing(true);
+  };
 
     //handle change
     const handleChange = async (e) => {
@@ -84,10 +88,9 @@ const EditNewsfeed = ({ post, onPostEdited, onCancel, onPostDelete }) => {
         <form onSubmit={handleSubmit}>
           <label htmlFor="content">
             Edit Post:
-            <input
-              type="text"
+            <textarea
               name="content"
-              value={editedPost.content}
+              value={editedPost.content || ''}
               onChange={handleChange}
               required
             />
@@ -100,7 +103,7 @@ const EditNewsfeed = ({ post, onPostEdited, onCancel, onPostDelete }) => {
       ) : (
         <p>Edit is not enabled</p>
       )}
-      <button onClick={handleDelete} >Delete Post</button>
+      <button type='button' onClick={handleDelete} >Delete Post</button>
       </>
     );
     }

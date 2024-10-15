@@ -132,13 +132,15 @@ const Dashboard = ({ user, setUser }) => {
 <ul>
     {children.map((child) => (
         <div key={child._id}>
-            <span>{child.name}</span>
+            <span>Name-{child.name},</span>
+            <span>{child.age},</span>
+            <span>{child.notes}</span>
             <button onClick={() => handleEditChild(child)}>Edit Child</button>
         </div>
     ))}
 </ul>
             
-            <h2>Account Details</h2>
+            <h2>Account Details:</h2>
 
             <button onClick={() => { setEditedUser(user); setEditing(true); }}>Edit User</button>
             <button onClick={handleDelete}>Delete Account</button>
@@ -179,10 +181,10 @@ const Dashboard = ({ user, setUser }) => {
             
                 <div>
                     <h2>Parent name: {user.username}</h2>
-                    <h3>Role: {user.role}</h3>
-                    <h3>Email: {user.email}</h3>
-                    <h3>User Id: {user._id}</h3>
-                    <h2>Children:</h2>
+                    <h3>Role- {user.role}</h3>
+                    <h3>Email- {user.email}</h3>
+                    <h3>User Id- {user._id}</h3>
+                    <h2>Children- </h2>
                     <ul>
                         {children.map((child, index) => (
                            <div key={child._id}>Name: {child.name}, Age:{child.age}, Special Notes: {child.notes}, Child Id: {child._id}</div> 
