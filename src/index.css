@@ -13,7 +13,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
  .navbar {
   display: flex;
   flex-direction: row;
@@ -37,11 +36,9 @@ body {
   display: flex;
   place-items: center;
   /* min-width: 320px; */
-  /* min-height: 100vh; */
+  min-height: 100vh;
   background-color: #c3e0f8;
 
-  
-  
   
 }
 #root {
@@ -71,6 +68,28 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+button[type="submit"] {
+  background-color: rgb(9, 10, 9);
+  color: white;
+  border:#535bf2;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+button[type="button"] {
+  background-color: rgb(9, 10, 9);
+  color: white;
+  border:#535bf2;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+button[type="cancel"] {
+  background-color: rgb(9, 10, 9);
+  color: white;
+  border:#535bf2;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {

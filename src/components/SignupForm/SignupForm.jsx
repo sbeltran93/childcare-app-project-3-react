@@ -98,9 +98,9 @@ const SignupForm = (props) => {
             </select>
         </div>
         <div>
-          <button>Sign Up</button>
+          <button type='submit'>Sign Up</button>
           <Link to="/">
-            <button>Cancel</button>
+            <button type='cancel'>Cancel</button>
           </Link>
         </div>
       </form>

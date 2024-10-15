@@ -102,13 +102,13 @@ const ChildEditForm = ({ child, onChildEdited, onCancel, onChildDelete }) => {
         />
       </label>
       <button type="submit">Save Changes</button>
-      <button type="button" onClick={onCancel}>Cancel</button>    
+      <button type="cancel" onClick={onCancel}>Cancel</button>    
     </form> 
      
   ) : (
     <p>Edit is not enabled</p>
   )}
-  <button onClick={handleDelete} >Delete Child</button>
+  <button type='button' onClick={handleDelete} >Delete Child</button>
   </>
 );
 };

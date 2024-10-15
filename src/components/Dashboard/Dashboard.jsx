@@ -105,80 +105,79 @@ const Dashboard = ({ user, setUser }) => {
             <p>
                 This is the dashboard for all your personal account information.</p>
     
-                {editingChild ? (
-    <ChildEditForm
-        child={editingChild}
-        onChildEdited={onChildEdited}
-        onCancel={handleCancelEdit}
-        onChildDelete={handleChildDelete}
-    />
-) : (
-    <ChildForm
-        user={user}
-        onChildAdded={handleChildAdded}
-        onChildEdited={onChildEdited}
-    />
-)}
+                <h2>Account Details:</h2>
 
-<ul>
-    {children.map((child) => (
-        <div key={child._id}>
-            <span>Name- {child.name},</span>
-            <span>Age- {child.age},</span>
-            <span>Notes- {child.notes}</span>
-            <span>Child Id- {child._id}</span>
-            <button onClick={() => handleEditChild(child)}>Edit Child</button>
-        </div>
-    ))}
-</ul>
-            
-            <h2>Account Details:</h2>
-
-            <button onClick={() => { setEditedUser(user); setEditing(true); }}>Edit User</button>
-            <button onClick={handleDelete}>Delete Account</button>
-
-            {editing ? (
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Parent Name:
-                        <input 
-                        type="text"
-                        name="username"
-                        value={editedUser.username}
-                        onChange={handleChange} 
-                    />
-                    </label>
-                    <label>
-                        Role:
-                        <input 
-                        type="text"
-                        name="role"
-                        value={editedUser.role}
-                        onChange={handleChange} 
-                    />
-                    </label>
-                    <label>
-                        Email:
-                        <input 
-                        type="email"
-                        name="email"
-                        value={editedUser.email}
-                        onChange={handleChange} 
-                    />
-                    </label>
-                    <button type="submit">Save Changes</button>
-                    <button type="button" onClick={() => setEditing(false)}>Cancel</button>
-                </form>
+{editing ? (
+    <form onSubmit={handleSubmit}>
+        <label>
+            Parent Name:
+            <input 
+            type="text"
+            name="username"
+            value={editedUser.username}
+            onChange={handleChange} 
+        />
+        </label>
+        <label>
+            Role:
+            <input 
+            type="text"
+            name="role"
+            value={editedUser.role}
+            onChange={handleChange} 
+        />
+        </label>
+        <label>
+            Email:
+            <input 
+            type="email"
+            name="email"
+            value={editedUser.email}
+            onChange={handleChange} 
+        />
+        </label>
+        <button type="submit">Save Changes</button>
+        <button type="button" onClick={() => setEditing(false)}>Cancel</button>
+    </form>
             ) : (
-            
-                <div>
-                    <h2>Parent name: {user.username}</h2>
-                    <h3>Role- {user.role}</h3>
-                    <h3>Email- {user.email}</h3>
-                    <h3>User Id- {user._id}</h3>
-                    
-                </div>    
-        )}
+
+    <div>
+        
+        <h2>Parent name: {user.username}</h2>
+        <h3>Role- {user.role}</h3>
+        <h3>Email- {user.email}</h3>
+        <h3>User Id- {user._id}</h3>
+    </div>    
+    )}
+
+                {editingChild ? (
+                <ChildEditForm
+                    child={editingChild}
+                    onChildEdited={onChildEdited}
+                    onCancel={handleCancelEdit}
+                    onChildDelete={handleChildDelete}
+                />
+            ) : (
+                <ChildForm
+                    user={user}
+                    onChildAdded={handleChildAdded}
+                    onChildEdited={onChildEdited}
+                />
+            )}
+
+        <ul>
+            {children.map((child) => (
+                <div key={child._id}>
+                    <span>Name- {child.name},</span>
+                    <span>Age- {child.age},</span>
+                    <span>Notes- {child.notes}</span>
+                    <span>Child Id- {child._id}</span>
+                    <button type="button" onClick={() => handleEditChild(child)}>Edit Child</button>
+                </div>
+            ))}
+        </ul>
+        <button type="button" onClick={() => { setEditedUser(user); setEditing(true); }}>Edit User</button>
+        <button type="cancel" onClick={handleDelete}>Delete Account</button>
         </main>
     );
 };

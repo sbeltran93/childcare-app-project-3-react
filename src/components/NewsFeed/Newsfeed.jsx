@@ -122,7 +122,7 @@ return (
           <div key={post._id}>
             <span>Post: {post.content}, </span>
             <span>Post By: {post.caregiver}</span>
-            <button onClick={() => handleEditPost(post)}>Edit Post</button>
+            <button type='button' onClick={() => handleEditPost(post)}>Edit Post</button>
           </div>
         ))}
       </ul>

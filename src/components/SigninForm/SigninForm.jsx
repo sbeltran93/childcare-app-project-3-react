@@ -58,9 +58,9 @@ return (
                 />
             </div>
             <div>
-                <button>Log In</button>
+                <button type="submit">Log In</button>
                 <Link to="/">
-                <button>Cancel</button>
+                <button type="cancel">Cancel</button>
                 </Link>
         </div>
         </form>
