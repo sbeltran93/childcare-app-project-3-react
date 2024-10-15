@@ -101,11 +101,11 @@ const Dashboard = ({ user, setUser }) => {
 
     return(
         <main>
-            <h1>Welcome, {user.username}</h1>
+            <h2>Welcome, {user.username}!</h2>
             <p>
-                This is the dashboard for all your personal account information.</p>
+                Your dashboard for all your personal account information.</p>
     
-                <h2>Account Details:</h2>
+                <h3>Account Details:</h3>
 
 {editing ? (
     <form onSubmit={handleSubmit}>
@@ -143,10 +143,10 @@ const Dashboard = ({ user, setUser }) => {
 
     <div>
         
-        <h2>Parent name: {user.username}</h2>
-        <h3>Role- {user.role}</h3>
-        <h3>Email- {user.email}</h3>
-        <h3>User Id- {user._id}</h3>
+        <h3>Parent name: {user.username}</h3>
+        <h4>Role- {user.role}</h4>
+        <h4>Email- {user.email}</h4>
+        <h4>User Id- {user._id}</h4>
     </div>    
     )}
 
@@ -168,10 +168,10 @@ const Dashboard = ({ user, setUser }) => {
         <ul>
             {children.map((child) => (
                 <div key={child._id}>
-                    <span>Name- {child.name},</span>
-                    <span>Age- {child.age},</span>
-                    <span>Notes- {child.notes}</span>
-                    <span>Child Id- {child._id}</span>
+                    <span className="child-details"><li>Name- {child.name},</li></span>
+                    <span className="child-details">Age- {child.age},</span>
+                    <span className="child-details">Notes- {child.notes}</span>
+                    <span className="child-details">Child Id- {child._id}</span>
                     <button type="button" onClick={() => handleEditChild(child)}>Edit Child</button>
                 </div>
             ))}

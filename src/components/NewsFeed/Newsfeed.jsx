@@ -105,7 +105,7 @@ return (
       />
     ) : null}
 
-    <div>
+    <div className='newsfeed-form'>
       <h1>Newsfeed</h1>
       <form onSubmit={handleSubmit}>
         <textarea
@@ -114,15 +114,15 @@ return (
           onChange={handleChange}
           required
         />
-        <button type="submit">Post</button>
+        <button type="submit-post">Post</button>
       </form>
       {message && <p>{message}</p>}
       <ul>
         {posts.map((post) => (
           <div key={post._id}>
-            <span>Post: {post.content}, </span>
-            <span>Post By: {post.caregiver}</span>
-            <button type='button' onClick={() => handleEditPost(post)}>Edit Post</button>
+            <span className='post'>Post: {post.content}, </span>
+            <span className='post'>Post By: {post.caregiver}</span>
+            <button type='post-button' onClick={() => handleEditPost(post)}>Edit Post</button>
           </div>
         ))}
       </ul>

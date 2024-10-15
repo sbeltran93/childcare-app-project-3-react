@@ -39,8 +39,9 @@ const ChildForm = ({ user, onChildAdded }) => {
       }
     };
     return (
-      <div>
-        <h2>Add Child</h2>
+      <div className="add-child-form">
+        <h3>Add Your Child</h3>
+          <h4>Please fill out the form below</h4>
         <form onSubmit={handleSubmit}>
           <label>
             Name:
