@@ -1,86 +1,91 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { isCompositeComponentWithType } from 'react-dom/test-utils';
+// imports
 
-const Newsfeed = ({ childId }) => {
-  const [feeds, setFeeds] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
 
-  useEffect(() => {
-    const fetchFeeds = async () => {
-      try {
-        const response = await axios.get(`/newsfeeds/${childId}`);
-        setFeeds(response.data);
-        setLoading(false);
-      } catch (error) {
-        setError(error.message);
-        setLoading(false);
-      }
-    };
-    fetchFeeds();
-  }, [childId]);
 
-  const handleAddFeed = async (content) => {
-    try {
-      const response = await axios.post('/newsfeeds', {
-        child: childId,
-        caregiver: `${user._id}`, 
-        content,
-      });
-      setFeeds([...feeds, response.data]);
-    } catch (error) {
-      setError(error.message);
+const Newsfeed = ({ user, onPostAdded }) => {
+
+  //states
+const [ newsfeed, setNewsfeed ] = useState({content: ''});
+const [ loading, setLoading ] = useState(true);
+const [ error, setError ] = useState(null);
+const [ message, setMessage ] = useState('');
+
+
+
+// handleSubmit to post by userid
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem ('token');
+  try {
+    const res = await fetch(`${BACKEND_URL}/newsfeeds`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },    
+      //unsure of line below is correct    
+      body: JSON.stringify({ ...newsfeed, caregiver: user._id }),
+    });
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error('Post to newsfeed failed');
     }
-  };
+    const addedPost = await res.json();
+    setMessage(`Post added: ${addedPost.newsfeed}`);
+    setNewsfeed({ content: '' });
+    onPostAdded(addedPost);
 
-  const handleUpdateFeed = async (id, content) => {
-    try {
-      const response = await axios.put(`/newsfeeds/${id}`, { content });
-      setFeeds(feeds.map((feed) => (feed._id === id ? response.data : feed)));
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  const handleDeleteFeed = async (id) => {
-    try {
-      await axios.delete(`/newsfeeds/${id}`);
-      setFeeds(feeds.filter((feed) => feed._id !== id));
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  if (loading) {
-    return <div>Loading...</div>;
+  } catch (error) {
+    setMessage(error.message);
   }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-  if (!Array.isArray(feeds)) {
-    return <div>No updates found</div>
-  }
-
-  return (
-    <div>
-      <h2>Add daily updaate {childId}</h2>
-      <ul>
-        {feeds.map((feed) => (
-          <li key={feed._id}>
-            <p>{feed.content}</p>
-            <p>Posted by {feed.caregiver.name} on {feed.timeStamp}</p>
-            <button onClick={() => handleUpdateFeed(feed._id, 'Updated content')}>Update</button>
-            <button onClick={() => handleDeleteFeed(feed._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-      <form onSubmit={(e) => handleAddFeed(e.target.content.value)}>
-        <input type="text" name="content" placeholder="Add a new feed" />
-        <button type="submit">Add</button>
-      </form>
-    </div>
-  );
 };
 
+//function to handle change
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setNewsfeed({ ...newsfeed, [name]: value });
+};
+
+
+//( WORK ON THIS AFTER I GET NEWSFEED TO POST A POST!)/////
+//handle editing post feed id,setEditingPost to post
+
+
+//handelCancelEdit to setEditingPost to null
+  
+
+//updated post handleChange
+
+ 
+// deleting post handleDelete
+//( WORK ON THIS AFTER I GET NEWSFEED TO POST A POST!)//////  
+   
+
+return (
+  <div>
+    <h1>Newsfeed</h1>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        name="content"
+        value={newsfeed.content}
+        onChange={handleChange}
+      />
+      <button type="submit">Post</button>
+    </form>
+    {message && <p>{message}</p>}
+  </div>
+  
+//form to make a post
+
+//form to edit post
+
+  
+)
+}
 export default Newsfeed;

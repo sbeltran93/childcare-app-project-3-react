@@ -25,6 +25,11 @@ const handleChildAdded = (addedChild) => {
   const token = localStorage.getItem ('token');
 };
 
+const handlePostAdded = (addedPost) => {
+  setNewsfeed([...newsfeed, addedPost]);
+  const token = localStorage.getItem ('token');
+};
+
   return (
     <>
       <NavBar user={user} handleSignout={handleSignout} />
@@ -37,7 +42,7 @@ const handleChildAdded = (addedChild) => {
         <Route path='/signup' element={<SignupForm  setUser={setUser} />} />
         <Route path='/signin' element={<SigninForm  setUser={setUser} />} />
         <Route path='/childs' element={<ChildForm user={user} child={child} setChild={setChild} onChildAdded={handleChildAdded} />} />
-        <Route path='/newsfeeds' element={<Newsfeed childId={child._id} />} />
+        <Route path='/newsfeeds' element={<Newsfeed user={user} onPostAdded={handlePostAdded} />} />
     </Routes>
   </>
   )

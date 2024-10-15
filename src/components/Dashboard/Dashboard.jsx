@@ -16,9 +16,11 @@ const Dashboard = ({ user, setUser }) => {
     // const [child, setChild] = useState('');
 
 
+    //handle editing child,setsediting child to child
     const handleEditChild = (child) => {
         setEditingChild(child);
     };
+    //cancel edit, sets editing child to null
     const handleCancelEdit = () => {
         setEditingChild(null);
     };
