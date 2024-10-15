@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ChildEditForm from '../ChildForm/ChildEditForm';
 import ChildForm from '../ChildForm/ChildForm';
+import EditNewsfeed from './EditNewsfeed';
 
 // imports
 
@@ -108,12 +109,15 @@ const handleSubmit = async (e) => {
 
 
 
-  
-
 //updated post handleChange
-const onPostEditing = (editingPost) => {
-  setPosts(posts.map((post) => (post._id === editingPost._id ? editingPost: post)));
-}
+// const onPostEditing = (editingPost) => {
+//   setPosts(posts.map((post) => (post._id === editingPost._id ? editingPost: post)));
+// }
+const onPostEdited = (editedPost) => {
+  setPosts(posts.map((post) => (post._id === editedPost._id ? editedPost : post)));
+  setEditingPost(null); // Clear editing state after editing
+};
+
 
  
 // deleting post handleDelete
@@ -150,7 +154,9 @@ return (
       <ul>
         {posts.map((post) => (
           <div key={post._id}>
-            Post: {post.content}, Post By: {post.caregiver}
+            <span>Post: {post.content}, </span>
+            <span>Post By: {post.caregiver}</span>
+            <button onClick={() => handleEditPost(post)}>Edit Post</button>
           </div>
         ))}
       </ul>
