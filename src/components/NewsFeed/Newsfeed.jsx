@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ChildEditForm from '../ChildForm/ChildEditForm';
+import ChildForm from '../ChildForm/ChildForm';
 
 // imports
 
@@ -10,9 +12,39 @@ const Newsfeed = ({ user, onPostAdded }) => {
 
   //states
 const [ newsfeed, setNewsfeed ] = useState({content: ''});
+const [ posts, setPosts ] = useState([]);
 const [ loading, setLoading ] = useState(true);
 const [ error, setError ] = useState(null);
 const [ message, setMessage ] = useState('');
+
+//display all posts
+
+useEffect(() => {
+  const fetchPosts = async () => {
+  const token = localStorage.getItem('token');
+    try {
+      const res = await fetch(`${BACKEND_URL}/newsfeeds`, {
+        headers: { 
+          'Authorization': `Bearer ${token}` 
+        }
+      });
+      if (!res.ok) {
+        throw new Error('Failed to fetch posts');
+      }
+      const data = await res.json();
+      if (!Array.isArray(data)) {
+        setPosts([data]);
+      } else {
+        setPosts(data);
+      }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchPosts();
+}, []);
 
 
 
@@ -35,10 +67,10 @@ const handleSubmit = async (e) => {
       throw new Error('Post to newsfeed failed');
     }
     const addedPost = await res.json();
-    setMessage(`Post added: ${addedPost.content}`);
+    setMessage(`Post added: ${addedPost.newsFeed.content}`);
     setNewsfeed({ content: '' });
     onPostAdded(addedPost);
-
+    setPosts([...posts, addedPost])
   } catch (error) {
     setMessage(error.message);
   }
@@ -67,7 +99,7 @@ const handleChange = (e) => {
 // deleting post handleDelete
 //( WORK ON THIS AFTER I GET NEWSFEED TO POST A POST!)//////  
    
-
+//form to make a post
 return (
   <div>
     <h1>Newsfeed</h1>
@@ -77,17 +109,18 @@ return (
         name="content"
         value={newsfeed.content}
         onChange={handleChange}
+        required
       />
       <button type="submit">Post</button>
     </form>
     {message && <p>{message}</p>}
+    <ul>
+      {posts.map((post) => (
+        <div key={post._id}>Post: {post.content}, Post By:{post.caregiver}</div> 
+      ))}
+    </ul>
   </div>
-  
-//form to make a post
-
-//form to edit post
-
-  
-)
+//form to edit post on new jsx page
+  )
 }
 export default Newsfeed;
