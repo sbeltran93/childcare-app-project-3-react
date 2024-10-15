@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { isCompositeComponentWithType } from 'react-dom/test-utils';
+
 // imports
 
 const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
@@ -35,7 +35,7 @@ const handleSubmit = async (e) => {
       throw new Error('Post to newsfeed failed');
     }
     const addedPost = await res.json();
-    setMessage(`Post added: ${addedPost.newsfeed}`);
+    setMessage(`Post added: ${addedPost.content}`);
     setNewsfeed({ content: '' });
     onPostAdded(addedPost);
 
@@ -43,6 +43,8 @@ const handleSubmit = async (e) => {
     setMessage(error.message);
   }
 };
+
+
 
 //function to handle change
 

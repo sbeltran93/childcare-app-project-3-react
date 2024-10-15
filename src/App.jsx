@@ -11,7 +11,7 @@ import Newsfeed from './components/NewsFeed/Newsfeed';
 
 const App = () => {
   const [child, setChild] = useState([]);
-  // const childId = `${childId}`;
+  const [newsfeed, setNewsfeed] = useState({ content: '' });
   const [user, setUser] = useState (authService.getUser());
 
 const handleSignout = () => {
@@ -24,11 +24,11 @@ const handleChildAdded = (addedChild) => {
   setChild([...child, addedChild]);
   const token = localStorage.getItem ('token');
 };
-
 const handlePostAdded = (addedPost) => {
   setNewsfeed([...newsfeed, addedPost]);
   const token = localStorage.getItem ('token');
 };
+
 
   return (
     <>
@@ -42,7 +42,7 @@ const handlePostAdded = (addedPost) => {
         <Route path='/signup' element={<SignupForm  setUser={setUser} />} />
         <Route path='/signin' element={<SigninForm  setUser={setUser} />} />
         <Route path='/childs' element={<ChildForm user={user} child={child} setChild={setChild} onChildAdded={handleChildAdded} />} />
-        <Route path='/newsfeeds' element={<Newsfeed user={user} onPostAdded={handlePostAdded} />} />
+        <Route path='/newsfeeds' element={<Newsfeed user={user} onPostAdded={(addedPost ) => setNewsfeed({ ...newsfeed, content: addedPost.content })}  />} />
     </Routes>
   </>
   )
