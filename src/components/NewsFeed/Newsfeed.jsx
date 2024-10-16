@@ -96,15 +96,6 @@ const handlePostDelete = (postId) => {
 
 return (
   <>
-    {editingPost ? (
-      <EditNewsfeed
-        post={editingPost}
-        onPostEdited={onPostEdited}
-        onCancel={handleCancelEdit}
-        onPostDelete={handlePostDelete}
-      />
-    ) : null}
-
     <div className='newsfeed-form'>
       <h1>Newsfeed</h1>
       <form onSubmit={handleSubmit}>
@@ -127,6 +118,17 @@ return (
         ))}
       </ul>
     </div>
+    {editingPost ? (
+      <EditNewsfeed
+        post={editingPost}
+        onPostEdited={onPostEdited}
+        onCancel={handleCancelEdit}
+        onPostDelete={handlePostDelete}
+      />
+    ) : null}
+
+
+
   </>
 );
 }

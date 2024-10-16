@@ -82,8 +82,8 @@ const EditNewsfeed = ({ post, onPostEdited, onCancel, onPostDelete }) => {
               required
             />
           </label>
-          <button type="submit">Save Changes</button>
-          <button type="button" onClick={onCancel}>Cancel</button>
+          <button type="save-post-edit">Save Changes</button>
+          <button type="cancel-post-edit" onClick={onCancel}>Cancel</button>
           
         </form> 
         
