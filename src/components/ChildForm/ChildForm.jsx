@@ -5,7 +5,7 @@ const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
 
 
 const ChildForm = ({ user, onChildAdded }) => {
-    const [child, setChild] = useState({ name: '', age: '', notes: '' });
+    const [child, setChild] = useState({ name: '', age: '', notes: '', parents: [], });
     const [message, setMessage] = useState('');
     
   
@@ -13,15 +13,38 @@ const ChildForm = ({ user, onChildAdded }) => {
       const { name, value } = e.target;
       setChild({ ...child, [name]: value });
     };
+
+    const handleAddParent = (e) => {
+      e.preventDefault();
+      const parentId = prompt("Enter parent ID");
+      if (parentId) {
+        setChild((prevChild) => ({
+          ...prevChild,
+          parents: [...prevChild.parents, parentId],
+        }));
+      }
+    }
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const token = localStorage.getItem('token');
+      
+      console.log('Child data being submitted:', child);
   
        try {
+          const token = localStorage.getItem('token');
           const res = await fetch(`${BACKEND_URL}/childs`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            body: JSON.stringify({ ...child, caregiver: user._id }),
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}` 
+            },
+            body: JSON.stringify({ 
+              // ...child,
+              // caregiver: user._id,
+              name: child.name, 
+              age: child.age, 
+              notes: child.notes, 
+              parents: child.parents 
+            }),
           });
   
           if (!res.ok) {
@@ -30,12 +53,16 @@ const ChildForm = ({ user, onChildAdded }) => {
           }
 
           const addedChild = await res.json();
-          setMessage(`Child added: ${addedChild.name}`);
-          setChild({ name: '', age: '', notes: '' });
           onChildAdded(addedChild);
-        
+          setMessage(`Child added: ${addedChild.name}`);
+          setChild({ 
+            name: '', 
+            age: '', 
+            notes: '',
+            parents: [],
+           });
           } catch (error) {
-            setMessage(error.message);
+            setMessage(`Error adding child: ${error.message}`);
       }
     };
     return (
@@ -72,6 +99,19 @@ const ChildForm = ({ user, onChildAdded }) => {
               required
             />
           </label>
+          <button type="button" onClick={handleAddParent}>
+          Add Parent
+        </button>
+        {child.parents.length > 0 && (
+          <div>
+            <h4>Assigned Parents:</h4>
+            <ul>
+              {child.parents.map((parentId, index) => (
+                <li key={index}>Parent ID: {parentId}</li>
+              ))}
+            </ul>
+          </div>
+        )}
           <button type="submit">Add Child</button>
         </form>
         {message && <p>{message}</p>}

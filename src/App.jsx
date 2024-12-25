@@ -9,6 +9,8 @@ import * as authService from './services/authService'
 import ChildForm from './components/ChildForm/ChildForm';
 import Newsfeed from './components/NewsFeed/Newsfeed';
 import EditNewsfeed from './components/NewsFeed/EditNewsfeed';
+import 'bootstrap/dist/css/bootstrap.min.css';  // Add this line to import Bootstrap
+
 
 
 const App = () => {
@@ -21,6 +23,7 @@ const handleSignout = () => {
   authService.signout()
   setUser(null);
 }  
+
 
 const handleChildAdded = (addedChild) => {
   setChild([...child, addedChild]);

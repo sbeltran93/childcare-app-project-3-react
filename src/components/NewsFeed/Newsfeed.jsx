@@ -10,22 +10,15 @@ const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
 
 const Newsfeed = ({ user, onPostAdded }) => {
 
-const [ newsfeed, setNewsfeed ] = useState({content: ''});
+const [ newsfeed, setNewsfeed ] = useState({ content: '', childId: ' '});
 const [ posts, setPosts ] = useState([]);
 const [ loading, setLoading ] = useState(true);
 const [ error, setError ] = useState(null);
 const [ message, setMessage ] = useState('');
 const [editingPost, setEditingPost] = useState(null);
 const [editedPost, setEditedPost] = useState(null);
+const [children, setChildren] = useState([]);
 
-const handleEditPost = (post) => {
-  setEditingPost(post);
-};
-
-
-const handleCancelEdit = () => {
-  setEditingPost(null)
-};
 
 useEffect(() => {
   const fetchPosts = async () => {
@@ -40,11 +33,7 @@ useEffect(() => {
         throw new Error('Failed to fetch posts');
       }
       const data = await res.json();
-      if (!Array.isArray(data)) {
-        setPosts([data]);
-      } else {
-        setPosts(data);
-      }
+      setPosts(Array.isArray(data) ? data : [data]);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -54,6 +43,36 @@ useEffect(() => {
   fetchPosts();
 }, []);
 
+useEffect(() => {
+  const fetchChildren = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch(`${BACKEND_URL}/childs`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        throw new Error('Failed to fetch children');
+      }
+      const data = await res.json();
+      setChildren(data);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+  fetchChildren();
+}, []);
+
+const handleEditPost = (post) => {
+  setEditingPost(post);
+};
+
+
+const handleCancelEdit = () => {
+  setEditingPost(null)
+};
+
 
 const handleChange = (e) => {
   const { name, value } = e.target;
@@ -62,6 +81,7 @@ const handleChange = (e) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   const token = localStorage.getItem ('token');
+
   try {
     const res = await fetch(`${BACKEND_URL}/newsfeeds`, {
       method: 'POST',
@@ -69,19 +89,23 @@ const handleSubmit = async (e) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },        
-      body: JSON.stringify({ ...newsfeed, caregiver: user._id }),
+      body: JSON.stringify({ 
+        content: newsfeed.content,
+        caregiver: user._id,
+        child: newsfeed.childId,
+       }),
     });
     if (!res.ok) {
       const errorText = await res.text();
       throw new Error('Post to newsfeed failed');
     }
+
     const addedPost = await res.json();
     setMessage(`Post added: ${addedPost.content}`);
-    setNewsfeed({ content: '' });
+    setNewsfeed({ content: '', childId: '' });
     onPostAdded(addedPost);
     setPosts([...posts, addedPost])
-  } 
-  catch (error) {
+  } catch (error) {
     setMessage(error.message);
   }
 };
@@ -105,6 +129,20 @@ return (
           onChange={handleChange}
           required
         />
+        /* Dropdown to select a child */
+        <select
+          name="childId"
+          value={newsfeed.childId}
+          onChange={handleChange}
+          required 
+        >
+          <option value="">Select a child</option>
+          {children.map((child) => (
+            <option key={child._id} value={child._id}>
+              {child.name}
+            </option>
+          ))}
+        </select>
         <button type="submit-post">Post</button>
       </form>
       {message && <p>{message}</p>}

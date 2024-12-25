@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-
 const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
 
 const ChildEditForm = ({ child, onChildEdited, onCancel, onChildDelete }) => {
   const [editedChild, setEditedChild] = useState(child);
   const [editing, setEditing] = useState(true);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
   
   useEffect(() => {
     setEditedChild(child);
@@ -48,6 +48,12 @@ const ChildEditForm = ({ child, onChildEdited, onCancel, onChildDelete }) => {
   };
 
   const handleDelete = async () => {
+    const confirmed = window.confirm('Are you sure you want to delete this child?');
+    
+    if (!confirmed) {
+      return;
+    }
+    
     const token = localStorage.getItem ('token');
     try {
         const res = await fetch(`${BACKEND_URL}/childs/${child._id}`, {
@@ -62,10 +68,25 @@ const ChildEditForm = ({ child, onChildEdited, onCancel, onChildDelete }) => {
             const errorText = await res.text();
             throw new Error(`Delete child failed: ${errorText}`);
         }
+
+        setDeleteSuccess(true);
         onChildDelete([child._id]);
+
+        setTimeout(() => {
+          setDeleteSuccess(false);
+        }, 3000);
+
     } catch (error) {
         console.error('Error deleting child', error.message)
     }
+};
+const successMessageStyle = {
+  backgroundColor: '#4CAF50', 
+  color: 'white',
+  padding: '3px',
+  borderRadius: '5px',
+  textAlign: 'center',
+  marginTop: '15px',
 };
 
   return (
@@ -109,6 +130,11 @@ const ChildEditForm = ({ child, onChildEdited, onCancel, onChildDelete }) => {
     <p>Edit is not enabled</p>
   )}
   <button type='button' onClick={handleDelete} >Delete Child</button>
+  {deleteSuccess && (
+      <div style={successMessageStyle}>
+        <p>Child successfully deleted!</p>
+      </div>
+    )}
   </>
 );
 };

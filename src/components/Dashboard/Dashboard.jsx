@@ -12,6 +12,7 @@ const Dashboard = ({ user, setUser }) => {
     const [children, setChildren] = useState([]);
     const [loading, setLoading] = useState(false);
     const [editingChild, setEditingChild] = useState(null);
+    const [error, setError] = useState('');
     
     const handleEditChild = (child) => {
         setEditingChild(child);
@@ -23,6 +24,8 @@ const Dashboard = ({ user, setUser }) => {
     useEffect(() => {
         const fetchChildren = async () => {
           const token = localStorage.getItem('token');
+          console.log('Token:', token);
+          try {
           const response = await fetch(`${BACKEND_URL}/childs/`, {
             method: 'GET',
             headers: {
@@ -30,10 +33,27 @@ const Dashboard = ({ user, setUser }) => {
               'Authorization': `Bearer ${token}`,
             },
           });
+
+          if (!response.ok) {
+            throw new Error('Failed to fetch children')
+          }
+
           const data = await response.json();
+
+          if (Array.isArray(data)) {
           setChildren(data);
-          setLoading(false);
-        };
+        
+        } else {
+            console.error('Received data is not an array', data);
+            setChildren([]);
+        }
+    }   catch (error) {
+        console.error('Error fetching children', error);
+        setChildren([]);
+    }   finally {    
+        setLoading(false);
+    }
+};
         fetchChildren();
       }, []);
 
@@ -165,17 +185,25 @@ const Dashboard = ({ user, setUser }) => {
                 />
             )}
 
-        <ul>
-            {children.map((child) => (
-                <div key={child._id}>
-                    <span className="child-details"><li>Name- {child.name},</li></span>
-                    <span className="child-details">Age- {child.age},</span>
-                    <span className="child-details">Notes- {child.notes}</span>
-                    <span className="child-details">Child Id- {child._id}</span>
-                    <button type="button" onClick={() => handleEditChild(child)}>Edit Child</button>
-                </div>
-            ))}
-        </ul>
+<ul>
+  {Array.isArray(children) && children.length > 0 ? (
+    children.map((child) => (
+      <div key={child._id}>
+        <span className="child-details">
+          <li>Name- {child.name},</li>
+        </span>
+        <span className="child-details">Age- {child.age},</span>
+        <span className="child-details">Notes- {child.notes}</span>
+        <span className="child-details">Child Id- {child._id}</span>
+        <button type="button" onClick={() => handleEditChild(child)}>
+          Edit Child
+        </button>
+      </div>
+    ))
+  ) : (
+    <p>No children available.</p>
+  )}
+</ul>
         <button type="button" onClick={() => { setEditedUser(user); setEditing(true); }}>Edit User</button>
         <button type="cancel" onClick={handleDelete}>Delete Account</button>
         </main>
