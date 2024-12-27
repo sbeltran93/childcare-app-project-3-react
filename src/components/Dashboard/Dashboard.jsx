@@ -25,6 +25,12 @@ const Dashboard = ({ user, setUser }) => {
         const fetchChildren = async () => {
           const token = localStorage.getItem('token');
           console.log('Token:', token);
+
+          if (!token) {
+            setError('No token found');
+            return;
+            }
+
           try {
           const response = await fetch(`${BACKEND_URL}/childs/`, {
             method: 'GET',

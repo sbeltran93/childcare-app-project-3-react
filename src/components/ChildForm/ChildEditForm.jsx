@@ -31,19 +31,16 @@ const ChildEditForm = ({ child, onChildEdited, onCancel, onChildDelete }) => {
       });
 
       if (!res.ok) {
-        const errorText = await res.text();
-        if (errorText.includes('Child not found')) {
-          alert('Child not found. Please try again.');
-        } else {
-        throw new Error(`Error updating child: ${errorText}`);
-      }
-      }
+        const errorText = await res.text(); 
+        throw new Error(errorText);
+    }
 
       
       const updatedChild = await res.json();
       onChildEdited(updatedChild);
     } catch (error) {
       console.error('Error updating child', error);
+      alert(error.message)
     }
   };
 
@@ -78,8 +75,10 @@ const ChildEditForm = ({ child, onChildEdited, onCancel, onChildDelete }) => {
 
     } catch (error) {
         console.error('Error deleting child', error.message)
+        alert(error.message)
     }
 };
+
 const successMessageStyle = {
   backgroundColor: '#4CAF50', 
   color: 'white',
