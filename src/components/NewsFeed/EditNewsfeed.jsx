@@ -75,6 +75,12 @@ const EditNewsfeed = ({ post, onPostEdited, onCancel, onPostDelete }) => {
         <form onSubmit={handleSubmit}>
           <label htmlFor="content">
             Edit Post:
+            <input
+              name='title'
+              value={editedPost.title}
+              onChange={handleChange || ''}
+              required
+            /> 
             <textarea
               name="content"
               value={editedPost.content || ''}

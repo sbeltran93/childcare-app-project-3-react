@@ -11,7 +11,7 @@ const BACKEND_URL = import.meta.env.VITE_CHILDCARE_BACKEND_URL;
 
 const Newsfeed = ({ user, onPostAdded }) => {
 
-const [ newsfeed, setNewsfeed ] = useState({ content: '', child: ''});
+const [ newsfeed, setNewsfeed ] = useState({ title:'', content: '', child: ''});
 const [ posts, setPosts ] = useState([]);
 const [ loading, setLoading ] = useState(true);
 const [ error, setError ] = useState(null);
@@ -104,6 +104,7 @@ const handleSubmit = async (e) => {
         'Authorization': `Bearer ${token}`,
       },        
       body: JSON.stringify({ 
+        title: newsfeed.title,
         content: newsfeed.content,
         //caregiver: newsfeed.caregiver,
         child: newsfeed.child,
@@ -122,7 +123,7 @@ const handleSubmit = async (e) => {
 
 
     setMessage(`Post added: ${addedPost.content}`);
-    setNewsfeed({ content: '', child: '' });
+    setNewsfeed({ title: '', content: '', child: '' });
     onPostAdded(addedPost);
     setPosts([...posts, addedPost])
   } catch (error) {
@@ -144,6 +145,14 @@ return (
     <div className='newsfeed-form'>
       <h1>Newsfeed</h1>
       <form onSubmit={handleSubmit}>
+        <input
+          type='text'
+          name='title'
+          value={newsfeed.title}
+          onChange={handleChange}
+          required
+          placeholder='Enter title for post'
+        />  
         <textarea
           name="content"
           value={newsfeed.content}
@@ -170,7 +179,8 @@ return (
       <ul>
         {posts.map((post) => (
           <div key={post._id}>
-            <span className='post'>Post: {post.content}, </span>
+            <h2 className='post-title'>{post.title}</h2>
+            <ul><span className='post'>Post: {post.content}, </span></ul>
             <span className='post'>Post By: {post.caregiver.username}</span> 
             <span className='post'>For Child: {post.child.name}</span>
             <button type='post-button' onClick={() => handleEditPost(post)}>Edit Post</button>
